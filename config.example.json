@@ -1,0 +1,40 @@
+{
+    "webhook_url": "https://your-mattermost-server.com/hooks/your-webhook-id",
+
+    "start_date": "2026-04-06",
+
+    "members": ["홍길동", "김철수"],
+
+    "daily_rotation_tasks": {
+        "member_0": [
+            "일일보고서(1, 2, 3)",
+            "출결 현황 체크"
+        ],
+        "member_1": [
+            "일일보고서(4, 5)",
+            "공지사항 전달"
+        ]
+    },
+
+    "weekly_rotation_tasks": {
+        "friday": {
+            "member_0": ["주간 보고서"],
+            "member_1": []
+        },
+        "thursday": {
+            "member_0": ["베스트 멤버 선정"],
+            "member_1": ["회의록 작성"]
+        }
+    },
+
+    "date_tasks": {
+        "2026-04-17": ["월간 평가"],
+        "2026-05-21": ["월간 평가"]
+    },
+
+    "task_links": {
+        "베스트 멤버 선정": "https://docs.google.com/spreadsheets/d/example1",
+        "주간 보고서": "https://docs.google.com/spreadsheets/d/example2",
+        "출결 현황 체크": "https://docs.google.com/spreadsheets/d/example3"
+    }
+}
