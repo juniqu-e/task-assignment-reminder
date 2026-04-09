@@ -10,6 +10,8 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).parent
 CONFIG_PATH = SCRIPT_DIR / "config.json"
 
+SUPPORTED_PLATFORMS = ("mattermost", "slack")
+
 WEEKDAY_KR = {
     0: "월요일",
     1: "화요일",
@@ -144,9 +146,13 @@ def build_message(config):
     return "\n".join(lines)
 
 
-def send_to_mattermost(webhook_url, message):
-    payload = {"text": message}
+def send_webhook(platform, webhook_url, message):
     headers = {"Content-Type": "application/json; charset=utf-8"}
+
+    if platform == "slack":
+        payload = {"text": message, "mrkdwn": True}
+    else:
+        payload = {"text": message}
 
     response = requests.post(
         webhook_url,
@@ -164,8 +170,13 @@ def send_to_mattermost(webhook_url, message):
 def main():
     config = load_config()
     webhook_url = config["webhook_url"]
+    platform = config.get("platform", "mattermost").lower()
 
-    if webhook_url == "여기에_웹훅_URL_입력":
+    if platform not in SUPPORTED_PLATFORMS:
+        print(f"지원하지 않는 플랫폼: {platform} (지원: {', '.join(SUPPORTED_PLATFORMS)})")
+        return
+
+    if "your-webhook-id" in webhook_url or "your-server" in webhook_url:
         print("config.json에서 webhook_url을 설정해주세요.")
         return
 
@@ -174,7 +185,7 @@ def main():
     print(message)
     print("==============================")
 
-    send_to_mattermost(webhook_url, message)
+    send_webhook(platform, webhook_url, message)
 
 
 if __name__ == "__main__":
