@@ -138,7 +138,13 @@ def build_message(config):
                 if task in task_links:
                     lines.append(f"- [{task}]({task_links[task]})")
                 else:
-                    lines.append(f"- {task}")
+                    # task 텍스트 안에 task_links 키가 포함되면 해당 부분만 링크 처리
+                    linked_task = task
+                    for key, url in task_links.items():
+                        if key in task and task != key:
+                            linked_task = task.replace(key, f"[{key}]({url})", 1)
+                            break
+                    lines.append(f"- {linked_task}")
         else:
             lines.append("- (오늘 배정된 업무 없음)")
         lines.append("")
